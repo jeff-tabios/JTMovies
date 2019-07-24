@@ -9,7 +9,12 @@
 import Foundation
 import Networking
 
-struct API{
+protocol APIProtocol{
+    func request<U:Codable>(endPoint: EndPoint, completion: @escaping (U?)->Void)
+    func analyzeResult<U:Decodable>(result: JSONResult, completion: @escaping (U?)->Void)
+}
+
+struct API:APIProtocol{
     func request<U:Codable>(endPoint: EndPoint, completion: @escaping (U?)->Void){
         
         let networking = Networking(baseURL: endPoint.baseURL)
