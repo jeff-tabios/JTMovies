@@ -46,19 +46,20 @@ class MovieListViewModel {
     
     func createNewMovieItemVM(movieItem:MovieItem) -> MovieItemViewModel{
         let itemVM = MovieItemViewModel()
+        itemVM.movieId = movieItem.id
         if let p = movieItem.posterPath {
-            itemVM.posterURL = AppConstants.imageBaseUrl + p
+            itemVM.posterURL = URL(string: AppConstants.imageBaseUrl + p)
         }
-        //print(itemVM.posterURL)
         itemVM.title = movieItem.title
-        itemVM.popularity = movieItem.popularity
+        itemVM.popularity = "Popularity: \(movieItem.popularity.rounded())"
+
         return itemVM
     }
-    
 }
 
 class MovieItemViewModel {
-    var posterURL: String?
+    var movieId: Int?
+    var posterURL: URL?
     var title: String?
-    var popularity: Double?
+    var popularity: String?
 }
