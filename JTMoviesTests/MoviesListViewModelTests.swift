@@ -19,22 +19,22 @@ class MoviesListViewModelTests: XCTestCase {
     
     func test_start_getPage1Movies_getPage2Movies() {
         XCTAssertEqual(vm.movieItemViewModels.count, 20)
-        if let lastPage = vm.lastPageLoaded {
-            vm.fetchData(page: lastPage + 1)
+        
+            vm.fetchData(page: vm.lastPageLoaded + 1)
             XCTAssertEqual(vm.movieItemViewModels.count, 40)
-        }
+        
     }
     
     func test_start_getPage1Movies_getPage2Movies_getPage3Movies() {
         XCTAssertEqual(vm.movieItemViewModels.count, 20)
-        if let lastPage = vm.lastPageLoaded {
-            vm.fetchData(page: lastPage + 1)
+        
+            vm.fetchData(page: vm.lastPageLoaded + 1)
             XCTAssertEqual(vm.movieItemViewModels.count, 40)
-            if let lastPage = vm.lastPageLoaded {
-                vm.fetchData(page: lastPage + 1)
+        
+                vm.fetchData(page: vm.lastPageLoaded + 1)
                 XCTAssertEqual(vm.movieItemViewModels.count, 60)
-            }
-        }
+        
+        
     }
 
 }

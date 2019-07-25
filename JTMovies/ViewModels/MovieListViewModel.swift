@@ -12,8 +12,8 @@ import UIKit
 class MovieListViewModel {
     
     var api:APIProtocol?
-    var lastPageLoaded: Int?
-    var totalPages: Int?
+    var lastPageLoaded = 0
+    var totalPages = 0
     var reloadTableViewClosure: (() -> Void)?
     
     var movieItemViewModels = [MovieItemViewModel]() {
@@ -46,11 +46,10 @@ class MovieListViewModel {
     
     func createNewMovieItemVM(movieItem:MovieItem) -> MovieItemViewModel{
         let itemVM = MovieItemViewModel()
-        if let poster = movieItem.posterPath {
-            itemVM.poster = UIImage(named: poster)
-        }else{
-            itemVM.poster = UIImage()
+        if let p = movieItem.posterPath {
+            itemVM.posterURL = AppConstants.imageBaseUrl + p
         }
+        //print(itemVM.posterURL)
         itemVM.title = movieItem.title
         itemVM.popularity = movieItem.popularity
         return itemVM
@@ -59,7 +58,7 @@ class MovieListViewModel {
 }
 
 class MovieItemViewModel {
-    var poster: UIImage?
+    var posterURL: String?
     var title: String?
     var popularity: Double?
 }
