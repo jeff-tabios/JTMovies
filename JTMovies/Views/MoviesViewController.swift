@@ -17,17 +17,27 @@ class MoviesViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        moviesTable.register(MovieItemCell.self, forCellReuseIdentifier: "MovieItemCell")
-        
+        setup()
+    }
+    
+    func setup(){
         vm.reloadTableViewClosure = { [weak self] in
             DispatchQueue.main.async {
                 self?.moviesTable.reloadData()
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MovieSegue" {
+            let s = sender as! MovieItemCell
+            let controller = segue.destination as! MovieDetailViewController
+            controller.movieId = s.movieId
+        }
+    }
 }
 
-extension MoviesViewController: UITableViewDataSource{
+extension MoviesViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.movieItemViewModels.count
     }
