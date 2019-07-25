@@ -12,6 +12,7 @@ import Kingfisher
 
 class MovieItemCell: UITableViewCell {
     
+    var movieId: Int?
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var popularityLabel: UILabel!
@@ -20,14 +21,17 @@ class MovieItemCell: UITableViewCell {
         didSet{
             if let item = self.movieItemViewModel {
                 
+                movieId = item.movieId
+                
                 if let p = item.posterURL {
-                    poster.kf.setImage(with: URL(string: p))
+                    poster.kf.setImage(with: p)
                 }else{
                     poster.image = UIImage(named: "noposter")
                 }
                 
                 titleLabel.text = item.title
-                popularityLabel.text = "Popularity: \(String(describing: item.popularity?.round()))"
+                
+                popularityLabel.text = item.popularity
             }
         }
     }
