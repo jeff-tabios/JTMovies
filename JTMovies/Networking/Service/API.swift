@@ -37,7 +37,6 @@ struct API:APIProtocol{
         case .patch:
             break
         }
-        
     }
     
     func analyzeResult<U:Decodable>(result: JSONResult, completion: @escaping (U?)->Void){

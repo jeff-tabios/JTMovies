@@ -64,6 +64,7 @@
                                             <outlet property="popularityLabel" destination="Fsb-j4-nJy" id="wAN-g9-b5T"/>
                                             <outlet property="poster" destination="m2q-U3-JoN" id="eEA-w5-9di"/>
                                             <outlet property="titleLabel" destination="WLG-xB-BpY" id="PxO-kl-uRu"/>
+                                            <segue destination="tJu-pM-4Yg" kind="show" identifier="MovieSegue" id="pVb-RY-2gi"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -91,6 +92,62 @@
             </objects>
             <point key="canvasLocation" x="644.92753623188412" y="746.65178571428567"/>
         </scene>
+        <!--Movie Detail View Controller-->
+        <scene sceneID="2av-iZ-9Xf">
+            <objects>
+                <viewController storyboardIdentifier="MovieDetailViewController" id="tJu-pM-4Yg" customClass="MovieDetailViewController" customModule="JTMovies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fw1-QD-FBM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wTB-p9-3vS">
+                                <rect key="frame" x="20" y="116" width="185" height="278"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Crouching Tiger Hidden Dragon" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kh3-ga-8Ss">
+                                <rect key="frame" x="213" y="116" width="181" height="101"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Genre: Action, Drama" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xtw-LR-lrB">
+                                <rect key="frame" x="213" y="213" width="181" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Language: English, Chinese" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ef-Yt-bCs">
+                                <rect key="frame" x="213" y="313" width="181" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="50" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPU-bw-dZc">
+                                <rect key="frame" x="20" y="411" width="374" height="451"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub's arrival. Scar, Mufasa's brother—and former heir to the throne—has plans…</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="LFj-Fe-4SZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="genre" destination="Xtw-LR-lrB" id="fDA-Sx-QHc"/>
+                        <outlet property="mLang" destination="4Ef-Yt-bCs" id="kgV-HG-Xal"/>
+                        <outlet property="mTitle" destination="kh3-ga-8Ss" id="GqF-TN-VH5"/>
+                        <outlet property="movieImage" destination="wTB-p9-3vS" id="7vY-ib-n4f"/>
+                        <outlet property="synopsis" destination="hPU-bw-dZc" id="PaW-yY-ICk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S3y-Ks-NSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1489.8550724637682" y="746.65178571428567"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hmh-Oc-qXT">
             <objects>
@@ -99,6 +156,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cTS-uZ-r84">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -110,4 +171,5 @@
             <point key="canvasLocation" x="-171.01449275362319" y="746.65178571428567"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
 </document>
