@@ -1,20 +1,34 @@
 PODS:
   - Kingfisher (5.7.0)
   - Networking (5.0.0)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
 
 DEPENDENCIES:
   - Kingfisher (~> 5.7)
   - Networking (~> 5.0)
+  - RxCocoa (~> 5)
+  - RxSwift (~> 5.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Kingfisher
     - Networking
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 SPEC CHECKSUMS:
   Kingfisher: c7d211b54f1f30d8060aadab177d52b4349c825b
   Networking: 8ced5868ab2b5cf0fcc1d3657bf9bb589ae2fe91
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
 
-PODFILE CHECKSUM: 70769983d8a1bad8a6233c120c655b17fcb8827d
+PODFILE CHECKSUM: 320908957540a2df94f68b600fad173377e624ce
 
 COCOAPODS: 1.5.3

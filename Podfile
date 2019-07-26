@@ -8,6 +8,8 @@ target 'JTMovies' do
   # Pods for JTMovies
   pod 'Networking', '~> 5.0'
   pod 'Kingfisher', '~> 5.7'
+  pod 'RxSwift', '~> 5.0'
+  pod 'RxCocoa', '~> 5'
 
   target 'JTMoviesTests' do
     inherit! :search_paths
