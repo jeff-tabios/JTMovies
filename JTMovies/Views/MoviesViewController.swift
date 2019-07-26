@@ -20,7 +20,27 @@ class MoviesViewController: UIViewController{
         setup()
     }
     
+    //MARK: Refresh
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.blue
+        
+        return refreshControl
+    }()
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl){
+        vm.movieItemViewModels = []
+        vm.fetchData()
+        refreshControl.endRefreshing()
+    }
+    
+    //MARK: SETUP
     func setup(){
+        moviesTable.addSubview(self.refreshControl)
+        
         vm.reloadTableViewClosure = { [weak self] in
             DispatchQueue.main.async {
                 self?.moviesTable.reloadData()
@@ -28,6 +48,7 @@ class MoviesViewController: UIViewController{
         }
     }
     
+    //MARK: SEGUE
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MovieSegue" {
             let s = sender as! MovieItemCell
@@ -37,6 +58,7 @@ class MoviesViewController: UIViewController{
     }
 }
 
+//MARK: Table data soure and delegate
 extension MoviesViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.movieItemViewModels.count
