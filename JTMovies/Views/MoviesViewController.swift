@@ -8,12 +8,17 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MoviesViewController: UIViewController{
     
     @IBOutlet weak var moviesTable: UITableView!
+    let disposeBag = DisposeBag()
     
     let vm = MovieListViewModel(api: API())
+    
+    var loadingData = false 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,20 +37,17 @@ class MoviesViewController: UIViewController{
     }()
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl){
-        vm.movieItemViewModels = []
-        vm.fetchData()
+        vm.refresh()
         refreshControl.endRefreshing()
     }
     
     //MARK: SETUP
     func setup(){
         moviesTable.addSubview(self.refreshControl)
-        
-        vm.reloadTableViewClosure = { [weak self] in
-            DispatchQueue.main.async {
-                self?.moviesTable.reloadData()
-            }
-        }
+        _ = vm.movieItemViewModels.subscribe(onNext:{_ in
+            self.moviesTable.reloadData()
+            self.loadingData = false
+        }).disposed(by: disposeBag)
     }
     
     //MARK: SEGUE
@@ -61,17 +63,21 @@ class MoviesViewController: UIViewController{
 //MARK: Table data soure and delegate
 extension MoviesViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.movieItemViewModels.count
+        return vm.movieItemViewModels.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieItemCell", for: indexPath) as! MovieItemCell
-        
-        let m=vm.movieItemViewModels[indexPath.row]
-        
-        cell.movieItemViewModel = m
-        
+        cell.movieItemViewModel = vm.movieItemViewModels.value[indexPath.row]
         return cell
         
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElement = vm.movieItemViewModels.value.count - 1
+        if !loadingData && indexPath.row == lastElement {
+            vm.fetchMore()
+            loadingData = true
+        }
     }
 }

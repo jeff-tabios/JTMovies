@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MovieListViewModel {
     
@@ -15,19 +17,14 @@ class MovieListViewModel {
     var lastPageLoaded = 0
     var totalPages = 0
     var reloadTableViewClosure: (() -> Void)?
-    
-    var movieItemViewModels = [MovieItemViewModel]() {
-        didSet {
-            self.reloadTableViewClosure?()
-        }
-    }
+    var movieItemViewModels = BehaviorRelay<[MovieItemViewModel]>(value: [])
     
     init(api:APIProtocol){
         self.api = api
-        fetchData()
+        fetchItems()
     }
     
-    func fetchData(page:Int = 1){
+    func fetchItems(page:Int = 1){
         api?.request(endPoint: MovieAPI.getMovies(page: page), completion: { [weak self] (movies:Movies?) in
             guard let movies = movies,movies.totalResults > 0 else { return }
             self?.lastPageLoaded = movies.page
@@ -36,12 +33,21 @@ class MovieListViewModel {
         })
     }
     
+    func fetchMore(){
+        fetchItems(page: lastPageLoaded+1)
+    }
+    
+    func refresh(){
+        movieItemViewModels.accept([])
+        fetchItems()
+    }
+    
     func processMovies(movieItems:[MovieItem]){
         var newItems = [MovieItemViewModel]()
         for movieItem in movieItems{
             newItems.append(createNewMovieItemVM(movieItem: movieItem))
         }
-        movieItemViewModels += newItems
+        movieItemViewModels.accept(movieItemViewModels.value + newItems)
     }
     
     func createNewMovieItemVM(movieItem:MovieItem) -> MovieItemViewModel{
