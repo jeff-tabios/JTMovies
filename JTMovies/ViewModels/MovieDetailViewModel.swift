@@ -28,12 +28,10 @@ class MovieDetailViewModel{
         self.api = api
     }
     
-    func fetchData(movieId:Int,completion: @escaping ()->Void){
+    func getMovie(movieId:Int,completion: @escaping ()->Void){
         api?.request(endPoint: MovieAPI.getMovie(id:movieId), completion: { [weak self] (movie:Movie?) in
             guard let movie = movie else { return }
-            
             self?.movie = movie
-            self?.prepareMovie()
             completion()
         })
     }
