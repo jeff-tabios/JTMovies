@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 class MovieDetailViewController: UIViewController {
-
+    
     @IBOutlet weak var movieImage: UIImageView!
     @IBOutlet weak var mTitle: UILabel!
     @IBOutlet weak var genre: UILabel!
@@ -33,7 +33,7 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         if let mid = movieId {
-            vm.fetchData(movieId: mid) { [weak self] in
+            vm.getMovie(movieId: mid) { [weak self] in
                 if let poster = self?.vm.mPoster{
                     self?.movieImage.kf.setImage(with: poster)
                 }else{
