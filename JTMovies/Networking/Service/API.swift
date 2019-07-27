@@ -11,27 +11,32 @@ import Networking
 
 protocol APIProtocol{
     func request<U:Codable>(endPoint: EndPoint, completion: @escaping (U?)->Void)
-    func analyzeResult<U:Decodable>(result: JSONResult, completion: @escaping (U?)->Void)
+    func decode<U:Decodable>(completion: @escaping (U?)->Void)
 }
 
-struct API:APIProtocol{
+class API:APIProtocol{
+    private var response:SuccessJSONResponse?
+    
     func request<U:Codable>(endPoint: EndPoint, completion: @escaping (U?)->Void){
         
         let networking = Networking(baseURL: endPoint.baseURL)
         networking.headerFields = endPoint.headers
+        
         switch endPoint.httpMethod {
         case .get:
-            networking.get(endPoint.path,parameters:endPoint.params){ (result) in
-                self.analyzeResult(result: result, completion: completion)
+            networking.get(endPoint.path,parameters:endPoint.params){[weak self](result) in
+                switch result{
+                case .success(let response):
+                    self?.response = response
+                    self?.decode(completion: completion)
+                case .failure:
+                    completion(nil)
+                }
             }
         case .post:
-            networking.post(endPoint.path,parameters:endPoint.params){ (result) in
-                self.analyzeResult(result: result, completion: completion)
-            }
+            break
         case .delete:
-            networking.delete(endPoint.path,parameters:endPoint.params){ (result) in
-                self.analyzeResult(result: result, completion: completion)
-            }
+            break
         case .put:
             break
         case .patch:
@@ -39,9 +44,8 @@ struct API:APIProtocol{
         }
     }
     
-    func analyzeResult<U:Decodable>(result: JSONResult, completion: @escaping (U?)->Void){
-        switch result {
-        case .success(let response):
+    func decode<U:Decodable>(completion: @escaping (U?)->Void){
+        if let response = response {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             guard let result = try? decoder.decode(U.self, from: response.data) else{
@@ -49,7 +53,7 @@ struct API:APIProtocol{
                 return
             }
             completion(result)
-        case .failure:
+        }else{
             completion(nil)
         }
     }
