@@ -13,41 +13,39 @@ import RxCocoa
 
 class MovieListViewModel {
     
-    var api:APIProtocol?
-    var lastPageLoaded = 0
-    var totalPages = 0
-    var reloadTableViewClosure: (() -> Void)?
+    private var api:APIProtocol?
+    private var lastPageLoaded = 0
     var movieItemViewModels = BehaviorRelay<[MovieItemViewModel]>(value: [])
     
     init(api:APIProtocol){
         self.api = api
-        fetchItems()
-    }
-    
-    func fetchItems(page:Int = 1){
-        api?.request(endPoint: MovieAPI.getMovies(page: page), completion: { [weak self] (movies:Movies?) in
-            guard let movies = movies,movies.totalResults > 0 else { return }
-            self?.lastPageLoaded = movies.page
-            self?.totalPages = movies.totalPages
-            self?.processMovies(movieItems: movies.results)
-        })
-    }
-    
-    func fetchMore(){
-        fetchItems(page: lastPageLoaded+1)
     }
     
     func refresh(){
-        movieItemViewModels.accept([])
-        fetchItems()
+        lastPageLoaded=0
+        getNextPage()
     }
     
-    func processMovies(movieItems:[MovieItem]){
+    func getNextPage(){
+        api?.request(endPoint: MovieAPI.getMovies(page: lastPageLoaded+1), completion: { [weak self] (movies:Movies?) in
+            guard let movies = movies else { return }
+            if let movieVMs = self?.processMovies(movieItems: movies.results){
+                self?.lastPageLoaded = movies.page
+                self?.movieItemViewModels.accept(movieVMs)
+            }
+        })
+    }
+    
+    func processMovies(movieItems:[MovieItem])->[MovieItemViewModel]{
         var newItems = [MovieItemViewModel]()
         for movieItem in movieItems{
             newItems.append(createNewMovieItemVM(movieItem: movieItem))
         }
-        movieItemViewModels.accept(movieItemViewModels.value + newItems)
+        if lastPageLoaded == 0 {
+            return newItems
+        }else{
+            return movieItemViewModels.value + newItems
+        }
     }
     
     func createNewMovieItemVM(movieItem:MovieItem) -> MovieItemViewModel{
@@ -58,7 +56,7 @@ class MovieListViewModel {
         }
         itemVM.title = movieItem.title
         itemVM.popularity = "Popularity: \(movieItem.popularity.rounded())"
-
+        
         return itemVM
     }
 }
