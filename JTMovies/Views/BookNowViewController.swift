@@ -10,12 +10,12 @@ import UIKit
 import WebKit
 
 class BookNowViewController: UIViewController {
-
+    
     @IBOutlet weak var wb: WKWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let url = URL(string: "https://www.cathaycineplexes.com.sg/")!
         wb.load(URLRequest(url: url))
         wb.allowsBackForwardNavigationGestures = true
