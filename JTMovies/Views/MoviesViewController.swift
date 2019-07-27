@@ -18,7 +18,7 @@ class MoviesViewController: UIViewController{
     
     let vm = MovieListViewModel(api: API())
     
-    var loadingData = false 
+    var loadingData = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,9 @@ class MoviesViewController: UIViewController{
     
     //MARK: SETUP
     func setup(){
+        vm.getNextPage()
         moviesTable.addSubview(self.refreshControl)
+        
         _ = vm.movieItemViewModels.subscribe(onNext:{_ in
             self.moviesTable.reloadData()
             self.loadingData = false
@@ -76,7 +78,7 @@ extension MoviesViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = vm.movieItemViewModels.value.count - 1
         if !loadingData && indexPath.row == lastElement {
-            vm.fetchMore()
+            vm.getNextPage()
             loadingData = true
         }
     }

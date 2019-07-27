@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Movie
 struct Movie: Codable {
-   
+    
     let genres: [Genre]
     let id: Int
     let overview: String
@@ -36,10 +36,5 @@ struct Genre: Codable {
 
 // MARK: - SpokenLanguage
 struct SpokenLanguage: Codable {
-    let iso639_1, name: String
-    
-    enum CodingKeys: String, CodingKey {
-        case iso639_1 = "iso_639_1"
-        case name
-    }
+    let  name: String
 }
